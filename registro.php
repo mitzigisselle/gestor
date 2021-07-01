@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
     <link rel="stylesheet" href="librerias/bootstrap4/bootstrap.min.css">
+    <link rel="stylesheet" href="librerias/jquery-ui-1.12.1/jquery-ui.theme.css">
+    <link rel="stylesheet" href="librerias/jquery-ui-1.12.1/jquery-ui.css">
 </head>
 <body>
     <div class="container">
@@ -14,11 +16,11 @@
         <div class="row">
             <div class="col sm-4"></div>
             <div class="col sm-4">
-                <form action="" id="frmRegistro" method="post" onsubmit="return agregarUsuarioNuevo()">
+                <form action="" id="frmRegistro" method="post" onsubmit="return agregarUsuarioNuevo()" autocomplete="off">
                     <label for="">Nombre</label>
                     <input type="text" name="nombre" id="nombre" class="form-control" require="">
                     <label for="">Fecha de Nacimiento</label>
-                    <input type="text" name="fechaNacimiento" id="fechaNacimiento" class="form-control" require="">
+                    <input type="text" name="fechaNacimiento" id="fechaNacimiento" class="form-control" require="" readonly="">
                     <label for="">Email o correo</label>
                     <input type="email" name="correo" id="correo" class="form-control" require="">
                     <label for="">Nombre de usuario</label>
@@ -43,9 +45,23 @@
     </div>
 
     <script src="librerias/jquery-3.6.0.min.js"></script>
+    <script src="librerias/jquery-ui-1.12.1/jquery-ui.js"></script>
     <script src="librerias/sweetalert.min.js"></script>
 
     <script>
+        $(function(){
+            var fechaA = new Date();
+            var yyyy = fechaA.getFullYear();
+            $("#fechaNacimiento").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1900:' + yyyy,
+                dateFormat: "yy-mm-dd"
+            });
+        });
+
+
+
         function agregarUsuarioNuevo(){
             $.ajax({
                method: "POST",
@@ -56,11 +72,13 @@
 
                     if(respuesta == 1){
                         $("#frmRegistro")[0].reset();
-                        swal("Agregado con exito!!!");
+                        swal(":)","Agregado con exito!!!","success");
+                    }else if(respuesta == 2){
+                        swal("Este usuario ya existe, por favor escribe otro");
                     }else{
-                        swal("Fallo al agregar!!!");
+                        swal(":(","Fallo al agregar!!!","error");
                     }
-               }
+                }
             });
             return false;
         }

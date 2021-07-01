@@ -20,9 +20,9 @@
             </div>
 
             <!-- Login Form -->
-            <form>
-            <input type="text" id="login" class="fadeIn second" name="login" placeholder="username">
-            <input type="password" id="password" class="fadeIn third" name="login" placeholder="password">
+            <form method="post" id="frmLogin" onsubmit="return logear()">
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="username" required="">
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
             <input type="submit" class="fadeIn fourth" value="Entrar">
             </form>
 
@@ -33,7 +33,27 @@
 
         </div>
     </div>
-
+    <script src="librerias/jquery-3.6.0.min.js"></script>
     <script src="librerias/sweetalert.min.js"></script>
+
+        <script>
+            function logear(){
+                $.ajax({
+                    type:"POST",
+                    data:$("#frmLogin").serialize(),
+                    url:"procesos/usuario/login/login.php",
+                    success:function(respuesta) {
+                        
+                        respuesta = respuesta.trim();
+                        if(respuesta == 1){
+                            window.location = "vistas/inicio.php";
+                        }else{
+                            swal(":", "Fallo al entrar!", "error");
+                        }
+                    }
+                });
+                return false;
+            }
+        </script>
 </body>
 </html>

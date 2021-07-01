@@ -10,6 +10,7 @@
                                        $usuario,
                                        $password,
                                        $base);
+            $conexion->set_charset('utf8mb4');
             return $conexion;
         }
     }
